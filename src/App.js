@@ -4,17 +4,29 @@ import './App.css';
 class App extends Component {
   state = {result:0,
     operand: null,
-  operator: null}
+    operator: null,
+    floatInput:false,
+  float:0}
 
   setOperatorAndOperand = (operatorValue) => {this.setState((prev)=>({
-    operand: prev.result,
+    operand: parseFloat(prev.result.toString() + "." + prev.float.toString()),
     result: 0,
-    operator: operatorValue
+    operator: operatorValue,
+    floatInput:false,
+    float:0
   }))}
 
   updateOperand = (value) => {
-    this.setState((prev)=>({
-      result: prev.result * 10 + value}))}
+    this.state.floatInput ? 
+      this.setState((prev)=>{
+        return({
+          float: prev.float * 10 + value})})
+
+
+      :  this.setState((prev)=>{
+        return({
+          result: prev.result * 10 + value})})
+  }
 
   calc = {
     "+": (x,y)=>x + y,
@@ -22,15 +34,16 @@ class App extends Component {
     "*": (x,y)=>x * y,
     "/": (x,y)=>x / y,
   }
-  
+
   resolve = () => {this.setState((prev)=>({
-    result: this.calc[prev.operator](prev.operand, prev.result)
+    result: this.calc[prev.operator](prev.operand, parseFloat(prev.result.toString()+"."+prev.float.toString()))
   }))}
 
   handleClick = (value)=>()=>{
     (typeof value == 'number') ? this.updateOperand(value) 
-     : value === '=' ? this.resolve()                           
-     : this.setOperatorAndOperand(value)
+      : value === '=' ? this.resolve()                           
+      : value === '.' ? this.setState({floatInput:true}) 
+      : this.setOperatorAndOperand(value)
   }
 
   render() {
@@ -47,6 +60,7 @@ class App extends Component {
         <Key value={'-'} clicked={this.handleClick}/> 
         <Key value={'*'} clicked={this.handleClick}/> 
         <Key value={'/'} clicked={this.handleClick}/> 
+        <Key value={'.'} clicked={this.handleClick}/> 
         <Key value={'='} clicked={this.handleClick}/> 
 
       </div>
