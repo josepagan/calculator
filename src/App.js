@@ -21,8 +21,6 @@ class App extends Component {
       this.setState((prev)=>{
         return({
           float: prev.float * 10 + value})})
-
-
       :  this.setState((prev)=>{
         return({
           result: prev.result * 10 + value})})
@@ -62,28 +60,12 @@ class App extends Component {
         <Key value={'/'} clicked={this.handleClick}/> 
         <Key value={'.'} clicked={this.handleClick}/> 
         <Key value={'='} clicked={this.handleClick}/> 
-
       </div>
     )
   }
 }
 
-
 const Key = ({value, clicked})=> 
   <button onClick={clicked(value)}>{value.toString()}</button> 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     export default App;
